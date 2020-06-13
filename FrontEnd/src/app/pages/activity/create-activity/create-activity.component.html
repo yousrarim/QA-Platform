@@ -1,0 +1,1088 @@
+<style>
+  .my-pagination /deep/ .ngx-pagination .current {
+    background: rgb(99, 96, 139);
+  }
+</style>
+
+<div>
+  <h4 class="mb-4 text-muted">Submit a QA metric</h4>
+  <div class="row">
+    <div class="col-md-12 col-lg-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Select an activity</h5>
+        </div>
+        <div class="text-center">
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCes()"> CES </button>
+        
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCss()"> CSS </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleaudit()"> AUDITS </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepgcrr()"> PG&CRR </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepdri()"> PDRI </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglev()"> V+/S+ </button>
+      
+      </div>  
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="showces">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned CES</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of cesService.lesces |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEdit(c)" ><i class="fa fa-edit mr-1"> </i> Submit  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+ 
+    
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Add CES</h5>
+          </div>
+          <div class="card-body">
+            <form #cesForm="ngForm" (ngSubmit)="onSubmitCES(cesForm)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="cesService.selectedCes._id">
+              <input type="hidden" name="plan_date" #_id="ngModel" [(ngModel)]="cesService.selectedCes.plan_date">
+              <input type="hidden" name="forcasted_date" #_id="ngModel" [(ngModel)]="cesService.selectedCes.forcasted_date">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" #name="ngModel"
+                    [(ngModel)]="cesService.selectedCes.p_name" name="p_name" required>
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="conductedby" class="col-sm-2 col-form-label text-nowrap">Conducted by</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="conductedby" aria-describedby="emailHelp"
+                    placeholder="Conducted by" #name="ngModel"
+                    [(ngModel)]="cesService.selectedCes.conducted_by" name="conducted_by">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateconduct" class="col-sm-2 col-form-label date-nowrap">Date conducted</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateconduct" aria-describedby="emailHelp"
+                    placeholder="Date"#name="ngModel"
+                    [(ngModel)]="cesService.selectedCes.date_conducted" name="date_conducted">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateissued" class="col-sm-2 col-form-label date-nowrap">Date issued</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateissued" aria-describedby="emailHelp"
+                    placeholder="Date" #name="ngModel"
+                    [(ngModel)]="cesService.selectedCes.date_issued" name="date_issued">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="client" class="col-sm-2 col-form-label text-nowrap">Client interviewed</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="client" aria-describedby="emailHelp"
+                    placeholder="Client interviewed" #name="ngModel"
+                    [(ngModel)]="cesService.selectedCes.client_interviewed" name="client_interviewed">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="comments" class="col-sm-2 col-form-label text-nowrap">Comments</label>
+                <div class="col-sm-4">
+                  <textarea type="textarea" class="form-control rounded-0" id="comments" aria-describedby="emailHelp"
+                    placeholder="Comments" #name="ngModel"
+                    [(ngModel)]="cesService.selectedCes.comments" name="comments"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-nowrap">Report</label>
+                <div class="col-sm-4">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label rounded-0" for="customFile">Choose file</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-4 mb-3">
+                  <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+                  <button type="button " class="btn btn-outline-lightning rounded-0 mb-2" (click)="resetFormCES(cesForm)">Reset</button>
+                </div>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="showcss">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned CSS</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of cssService.lesCss |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditcss(c)" ><i class="fa fa-edit mr-1"> </i>  Submit </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5> Add CSS</h5>
+          </div>
+          <div class="card-body">
+            <form #cssForm="ngForm" (ngSubmit)="onSubmitCSS(cssForm)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="cssService.selectedCss._id">
+              <input type="hidden" name="plan_date" #_id="ngModel" [(ngModel)]="cssService.selectedCss.plan_date">
+              <input type="hidden" name="forcasted_date" #_id="ngModel" [(ngModel)]="cssService.selectedCss.forcasted_date">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" #name="ngModel"
+                    [(ngModel)]="cssService.selectedCss.p_name" name="p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="conductedby" class="col-sm-2 col-form-label text-nowrap">Conducted by</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="conductedby" aria-describedby="emailHelp"
+                    placeholder="Conducted by" #name="ngModel" [(ngModel)]="cssService.selectedCss.conducted_by" name="conducted_by">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateconduct" class="col-sm-2 col-form-label date-nowrap">Date conducted</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateconduct" aria-describedby="emailHelp"
+                    placeholder="Date"  #name="ngModel" [(ngModel)]="cssService.selectedCss.date_conducted" name="date_conducted">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateissued" class="col-sm-2 col-form-label date-nowrap">Date issued</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateissued" aria-describedby="emailHelp"
+                    placeholder="Date"  #name="ngModel" [(ngModel)]="cssService.selectedCss.date_issued" name="date_issued">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="client" class="col-sm-2 col-form-label text-nowrap">Client interviewed</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="client" aria-describedby="emailHelp"
+                    placeholder="Client interviewed"  #name="ngModel" [(ngModel)]="cssService.selectedCss.client_interviewed" name="client_interviewed">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="comments" class="col-sm-2 col-form-label text-nowrap">Comments</label>
+                <div class="col-sm-4">
+                  <textarea type="textarea" class="form-control rounded-0" id="comments" aria-describedby="emailHelp"
+                    placeholder="Comments" #name="ngModel" [(ngModel)]="cssService.selectedCss.comments" name="comments"></textarea>
+                </div>
+              </div>
+  
+  
+            
+          
+  
+          <div class="card-title mb-1 p-3">
+            <h5> Client Survey Score</h5>
+          </div>
+            
+  
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Safety</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.saf" name="saf">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Scope/ Project development</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.sco" name="sco">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Communication & Responsiveness</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.com" name="com">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Technical services</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.tec" name="tec">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Staffing</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.sta" name="sta">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Schedule</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.sch" name="sch">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Cost & Estimating</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.cos" name="cos">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Field services</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Supply management</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.sup" name="sup">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label text-nowrap">Management support</label>
+                <div class="col-sm-2">
+                  <select class="form-control rounded-0" id="category" #name="ngModel" [(ngModel)]="cssService.selectedCss.man" name="man">
+                    <option *ngFor="let score of scores">{{score}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="finalscore" class="col-sm-2 col-form-label text-nowrap"><Strong>Final score</Strong></label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control rounded-0" id="finalscore" aria-describedby="emailHelp"
+                    placeholder="Final score" #name="ngModel" [(ngModel)]="cssService.selectedCss.score" name="score">
+                </div>
+              </div>
+  
+  
+              <div class="card-title mb-1 p-3">
+                <h5> Report</h5>
+              </div>
+              
+  
+  
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-nowrap">Report</label>
+                <div class="col-sm-4">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label rounded-0" for="customFile">Choose file</label>
+                  </div>
+                </div>
+              </div>
+  
+  
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-4 mb-3">
+                  <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+                  <button type="button " class="btn btn-outline-lightning rounded-0 mb-2" (click)="resetFormCSS(cssForm)">Reset</button>
+                </div>
+              </div>
+            </form>
+          </div>
+       
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-container *ngIf="showaudit">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned Audits</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Audit name</th>
+                      <th>Audit type</th>
+                      <th>Discipline</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of auditService.lesAudit |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.audit_name}}</td>
+                      <td>{{c.audit_type}}</td>
+                      <td>{{c.discipline}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditaudit(c)" ><i class="fa fa-edit mr-1"> </i> Submit  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Add audit</h5>
+          </div>
+          <div class="card-body">
+            <form #auditForm="ngForm" (ngSubmit)="onSubmitAUDIT(auditForm)" >
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="auditService.selectedAudit._id">
+              <input type="hidden" name="plan_date" #_id="ngModel" [(ngModel)]="auditService.selectedAudit.plan_date">
+              <input type="hidden" name="forcasted_date" #_id="ngModel" [(ngModel)]="auditService.selectedAudit.forcasted_date">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" [(ngModel)]="auditService.selectedAudit.p_name"
+                    #name="ngModel" name="p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="audittype" class="col-sm-2 col-form-label text-nowrap">Audit type</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="audittype" name="audit_type" #name="ngModel"
+                  [(ngModel)]="auditService.selectedAudit.audit_type">
+                    <option *ngFor="let type of types">{{type}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="auditname" class="col-sm-2 col-form-label text-nowrap">Audit name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="auditname" name="audit_name" #name="ngModel"
+                    [(ngModel)]="auditService.selectedAudit.audit_name">
+                    <option *ngFor="let a of auditname">{{a}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="discipline" class="col-sm-2 col-form-label text-nowrap">Discipline</label>
+                <div class="col-sm-4">
+
+                  <input type="text" class="form-control rounded-0" id="discipline" aria-describedby="emailHelp"
+                    placeholder="Discipline" name="discipline" #name="ngModel" [(ngModel)]="auditService.selectedAudit.discipline">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="conductedby" class="col-sm-2 col-form-label text-nowrap">Conducted by</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="conductedby" aria-describedby="emailHelp"
+                    placeholder="Conducted by" #name="ngModel" [(ngModel)]="auditService.selectedAudit.conducted_by" name="conducted_by">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateconduct" class="col-sm-2 col-form-label date-nowrap">Date conducted</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateconduct" aria-describedby="emailHelp"
+                    placeholder="Date" #name="ngModel" [(ngModel)]="auditService.selectedAudit.date_conducted" name="date_conducted">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateissued" class="col-sm-2 col-form-label date-nowrap">Date issued</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateissued" aria-describedby="emailHelp"
+                    placeholder="Date" #name="ngModel" [(ngModel)]="auditService.selectedAudit.date_issued" name="date_issued">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="score" class="col-sm-2 col-form-label text-nowrap">Score</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="score" aria-describedby="emailHelp"
+                    placeholder="score" #name="ngModel" [(ngModel)]="auditService.selectedAudit.score" name="score">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="comments" class="col-sm-2 col-form-label text-nowrap">Comments</label>
+                <div class="col-sm-4">
+                  <textarea type="textarea" class="form-control rounded-0" id="comments" aria-describedby="emailHelp"
+                    placeholder="Comments" #name="ngModel" [(ngModel)]="auditService.selectedAudit.comments" name="comments"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-nowrap">Report</label>
+                <div class="col-sm-4">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label rounded-0" for="customFile">Choose file</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-4 mb-3">
+                  <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+                  <button type="button " class="btn btn-outline-lightning rounded-0 mb-2" (click)="resetFormAUDIT(auditForm)"> Reset</button>
+                </div>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</ng-container>
+
+<ng-container *ngIf="showpdri">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned PDRIs</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Type</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of pdriService.lesPdri |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.type}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"(click)="onEditpdri(c)"  ><i class="fa fa-edit mr-1"> </i>  Submit </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Add PDRI</h5>
+          </div>
+          <div class="card-body">
+            <form #pdriform="ngForm" (ngSubmit)="onSubmitPDRI(pdriform)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="pdriService.selectedPdri._id">
+              <input type="hidden" name="plan_date" #_id="ngModel" [(ngModel)]="pdriService.selectedPdri.plan_date">
+              <input type="hidden" name="forcasted_date" #_id="ngModel" [(ngModel)]="pdriService.selectedPdri.forcasted_date">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" name="p_name" #name="ngModel"
+                    [(ngModel)]="pdriService.selectedPdri.p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="typepdri" class="col-sm-2 col-form-label text-nowrap">Type</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="typepdri" name="type" #name="ngModel"
+                    [(ngModel)]="pdriService.selectedPdri.type">
+                    <option *ngFor="let l of typepdri">{{l}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="scope" class="col-sm-2 col-form-label text-nowrap">Scope of work</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="scope" aria-describedby="emailHelp"
+                    placeholder="scope " #name="ngModel" [(ngModel)]="pdriService.selectedPdri.scope"  name="scope">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="conductedby" class="col-sm-2 col-form-label text-nowrap">Conducted by</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="conductedby" aria-describedby="emailHelp"
+                    placeholder="Conducted by" #name="ngModel" [(ngModel)]="pdriService.selectedPdri.conducted_by"  name="conducted_by">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateconduct" class="col-sm-2 col-form-label date-nowrap">Date conducted</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateconduct" aria-describedby="emailHelp"
+                    placeholder="Date" #name="ngModel" [(ngModel)]="pdriService.selectedPdri.date_conducted"  name="date_conducted">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateissued" class="col-sm-2 col-form-label date-nowrap">Date issued</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateissued" aria-describedby="emailHelp"
+                    placeholder="Date" #name="ngModel" [(ngModel)]="pdriService.selectedPdri.date_issued"  name="date_issued">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="score" class="col-sm-2 col-form-label text-nowrap">Score</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control rounded-0" id="score" aria-describedby="emailHelp"
+                    placeholder="score" #name="ngModel" [(ngModel)]="pdriService.selectedPdri.score"  name="score">
+                </div>
+              </div>
+              
+  
+              <div class="form-group row">
+                <label for="comments" class="col-sm-2 col-form-label text-nowrap">Comments</label>
+                <div class="col-sm-4">
+                  <textarea type="textarea" class="form-control rounded-0" id="comments" aria-describedby="emailHelp"
+                    placeholder="Comments" #name="ngModel" [(ngModel)]="pdriService.selectedPdri.comments"  name="comments"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-nowrap">Report</label>
+                <div class="col-sm-4">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label rounded-0" for="customFile">Choose file</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-4 mb-3">
+                  <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+                  <button type="button " class="btn btn-outline-lightning rounded-0 mb-2" (click)="resetFormPDRI(pdriform)">Reset</button>
+                </div>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="showv">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned PG/CRR</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>V+ planned target</th>
+                      <th>V+ new target</th>
+                      <th>S+ planned target</th>
+                      <th>S+ new target</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of VSService.lesVS |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.target_v}} <i>MMAD</i> </td>
+                      <td style="color: brown;">{{c.new_target_v}} <i>MMAD</i></td>
+                      <td>{{c.target_s}} <i>tCO2e</i></td>
+                      <td style="color: brown;">{{c.new_target_s}} <i>tCO2e</i></td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"  (click)="onEditVS(c)"><i class="fa fa-edit mr-1"> </i>  Submit </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Value + /Sustainability +</h5>
+          </div>
+          <div class="card-body">
+            <form #vsform="ngForm" (ngSubmit)="onSubmitVS(vsform)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="VSService.selectedVS._id">
+              <input type="hidden" name="target_s" #_id="ngModel" [(ngModel)]="VSService.selectedVS.target_s">
+              <input type="hidden" name="target_v" #_id="ngModel" [(ngModel)]="VSService.selectedVS.target_v">
+              <input type="hidden" name="new_target_s" #_id="ngModel" [(ngModel)]="VSService.selectedVS.new_target_s">
+              <input type="hidden" name="new_target_v" #_id="ngModel" [(ngModel)]="VSService.selectedVS.new_target_v">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" name="p_name" #name="ngModel"
+                    [(ngModel)]="VSService.selectedVS.p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="originator" class="col-sm-2 col-form-label text-nowrap">Originator</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="originator" aria-describedby="emailHelp"
+                    placeholder="Originator" [(ngModel)]="VSService.selectedVS.originator" name="originator" #name="ngModel">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="discipline" class="col-sm-2 col-form-label text-nowrap">Discipline</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="discipline" aria-describedby="emailHelp"
+                    placeholder="Discipline" [(ngModel)]="VSService.selectedVS.discipline" name="discipline" #name="ngModel">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="datesubmit" class="col-sm-2 col-form-label date-nowrap">Date submitted</label>
+                <div class="col-sm-4">
+                  <input type="date" class="form-control rounded-0" id="datesubmit" aria-describedby="emailHelp"
+                    placeholder="Date" [(ngModel)]="VSService.selectedVS.date_submitted" name="date_submitted" #name="ngModel">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="idea" class="col-sm-2 col-form-label text-nowrap">Idea</label>
+                <div class="col-sm-4">
+                  <textarea type="textarea" class="form-control rounded-0" id="idea" aria-describedby="emailHelp"
+                    placeholder="Idea..." [(ngModel)]="VSService.selectedVS.idea" name="idea" #name="ngModel"></textarea>
+              </div>
+              </div>
+              
+  <!--
+              <div class="form-group row">
+                <label for="date" class="col-sm-2 col-form-label date-nowrap">Date</label>
+                <div class="col-sm-4">
+                  <input type="date" class="form-control rounded-0" id="date" aria-describedby="emailHelp"
+                    placeholder="Date" >
+                </div>
+              </div>-->
+  
+              <div class="form-group row">
+                <label for="subsaving" class="col-sm-2 col-form-label text-nowrap">Submitted saving</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="subsaving" aria-describedby="emailHelp"
+                    placeholder="Submitted saving" [(ngModel)]="VSService.selectedVS.submitted_saving" name="submitted_saving" #name="ngModel">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="pmsaving" class="col-sm-2 col-form-label text-nowrap">PM approved saving</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="pmsaving" aria-describedby="emailHelp"
+                    placeholder="PM approved saving" [(ngModel)]="VSService.selectedVS.pm_saving" name="pm_saving" #name="ngModel">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="clientsaving" class="col-sm-2 col-form-label text-nowrap">Client approved saving</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="clientsaving" aria-describedby="emailHelp"
+                    placeholder="Client approved saving" [(ngModel)]="VSService.selectedVS.client_saving" name="client_saving" #name="ngModel">
+                </div>
+             </div>
+              
+            <div class="form-group row">
+                <label for="ssaving" class="col-sm-2 col-form-label text-nowrap">Saving of tCO2e</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="ssaving" aria-describedby="emailHelp"
+                    placeholder="Saving of tCO2e" [(ngModel)]="VSService.selectedVS.tco_saving" name="tco_saving" #name="ngModel">
+                </div>
+              </div>
+  
+  
+                
+              
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-nowrap">Report</label>
+                <div class="col-sm-4">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label rounded-0" for="customFile">Choose file</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10 mb-3">
+                  <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+                  <button type="button " class="btn btn-outline-lightning rounded-0 mb-2" (click)="resetFormVS(vsform)"> Reset</button>
+                </div>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+
+<ng-container *ngIf="showpgcrr">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned PG/CRR</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Type</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of pgcrrService.lesPgcrr |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.type}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"  (click)="onEditpgcrr(c)"><i class="fa fa-edit mr-1"> </i> Submit  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Add PG & CRR</h5>
+          </div>
+          <div class="card-body">
+            <form #pgcrrform="ngForm" (ngSubmit)="onSubmitPGCRR(pgcrrform)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr._id">
+              <input type="hidden" name="plan_date" #_id="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.plan_date">
+              <input type="hidden" name="forcasted_date" #_id="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.forcasted_date">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" name="p_name" #name="ngModel"
+                    [(ngModel)]="pgcrrService.selectedPgcrr.p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="typepg" class="col-sm-2 col-form-label text-nowrap">Type</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="typepg" name="type" #name="ngModel"
+                    [(ngModel)]="pgcrrService.selectedPgcrr.type">
+                    <option *ngFor="let l of typepg">{{l}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="conductedby" class="col-sm-2 col-form-label text-nowrap">Conducted by</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="conductedby" aria-describedby="emailHelp"
+                    placeholder="Conducted by" name="conducted_by" #name="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.conducted_by">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateconduct" class="col-sm-2 col-form-label date-nowrap">Date conducted</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateconduct" aria-describedby="emailHelp"
+                    placeholder="Date"  #name="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.date_conducted" name="date_conducted">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="dateissued" class="col-sm-2 col-form-label date-nowrap">Date issued</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="dateissued" aria-describedby="emailHelp"
+                    placeholder="Date" #name="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.date_issued" name="date_issued">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="score" class="col-sm-2 col-form-label text-nowrap">Result</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="result" name="result" #name="ngModel"
+                    [(ngModel)]="pgcrrService.selectedPgcrr.result">
+                    <option *ngFor="let l of results">{{l}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="score" class="col-sm-2 col-form-label text-nowrap">Score</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="score" aria-describedby="emailHelp"
+                    placeholder="score" #name="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.score" name="score">
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="comments" class="col-sm-2 col-form-label text-nowrap">Comments</label>
+                <div class="col-sm-4">
+                  <textarea type="textarea" class="form-control rounded-0" id="comments" aria-describedby="emailHelp"
+                    placeholder="Comments" #name="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr.comments" name="comments"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label text-nowrap">Report</label>
+                <div class="col-sm-4">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label rounded-0" for="customFile">Choose file</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-4 mb-3">
+                  <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+                  <button type="button " class="btn btn-outline-lightning rounded-0 mb-2" (click)="resetFormPGCRR(pgcrrform)">Reset</button>
+                </div>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+
+
+
+
+
+
+<!--
+     <div >
+         <app-css [showMePartially]="showcss"></app-css>
+     </div>
+-->
+

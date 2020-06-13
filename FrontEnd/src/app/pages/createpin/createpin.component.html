@@ -1,0 +1,519 @@
+<style>
+  .my-pagination /deep/ .ngx-pagination .current {
+    background: rgb(99, 96, 139);
+  }
+</style>
+
+
+  
+
+
+<div>
+  <h4 class="mb-4 text-muted">Submit a QA metric</h4>
+  <div class="row">
+    <div class="col-md-12 col-lg-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Choose an activity</h5>
+        </div>
+        <div class="text-center">
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCes()"> CES </button>
+        
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCss()"> CSS </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleaudit()"> AUDITS </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepgcrr()"> PG&CRR </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepdri()"> PDRI </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglev()"> V+/S+ </button>
+      
+      </div>  
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="showces">
+ 
+
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Submitted CES</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+
+                      <th>Conducted by</th>
+                      <th>Date conducted</th>
+                      <th>Date issued</th>
+                      
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of cesService.submittedces |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.conducted_by}}</td>
+                      <td>{{c.date_conducted}}</td>
+                      <td>{{c.date_issued}}</td>
+                      
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditces(c)" ><i class="fa fa-edit mr-1"> </i> Add a PIN  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="showcss">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Submitted CSS</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Conducted by</th>
+                      <th>Date conducted</th>
+                      <th>Date issued</th>
+                      <th>score</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of cssService.subCss |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.conducted_by}}</td>
+                      <td>{{c.date_conducted}}</td>
+                      <td>{{c.date_issued}}</td>
+                      <td >{{c.score}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditcss(c)" ><i class="fa fa-edit mr-1"> </i> Add a PIN  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="showaudit">
+  <div>
+
+ 
+   <div class="row">
+ 
+     <div class="col-md-12 mb-4">
+   
+       <div class="card border-0 rounded-0">
+         <div class="card-title mb-1 p-3">
+           <h5>Submitted audits</h5>
+         </div>
+         <div class="card-body">
+           <div class="example-header">
+             <div>
+             <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+           </div>
+           <div class="table-responsive-md">
+             <div class="table-responsive">
+               <table class="table table-hover">
+                 <thead>
+                   <tr>
+                     <th>Project name</th>
+                     <th>Audit name</th>
+                     <th>Audit type</th>
+                     <th>Discipline</th>
+                     <th>Conducted by</th>
+                     <th>Date conducted</th>
+                     <th>Score</th>
+                     <th>Action</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+ 
+                   <tr *ngFor="let c of auditService.subAudit |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                     <td>{{c.p_name}}</td>
+                     <td>{{c.audit_name}}</td>
+                     <td>{{c.audit_type}}</td>
+                     <td>{{c.discipline}}</td>
+                     <td>{{c.conducted_by}}</td>
+                     <td>{{c.date_conducted}}</td>
+                     <td >{{c.score}}</td>
+                     <td >
+                     <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditaudit(c)" ><i class="fa fa-edit mr-1"> </i>  Add a PIN  </a>
+                     </td>
+                   </tr> 
+                 </tbody>
+                 
+                 <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+               
+               </table>
+             </div>
+           </div>
+   
+         </div>
+       </div>
+     </div>
+     </div>
+   </div>
+ </div>
+</ng-container>
+<ng-container *ngIf="showpdri">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Submitted PDRI</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Type</th>
+                      <th>Date conducted</th>
+                      <th>Date issued</th>
+                      <th>score</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of pdriService.subPdri |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.type}}</td>
+                      <td>{{c.date_conducted}}</td>
+                      <td>{{c.date_issued}}</td>
+                      <td >{{c.score}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditpdri(c)" ><i class="fa fa-edit mr-1"> </i>  Add a PIN  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<ng-container *ngIf="showv">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Submitted V+/S+</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Date submitted</th>
+                      <th>Submitted Saving</th>
+                      <th>PM Approved Saving</th>
+                      <th>Client Approved Saving</th>
+                      <th>Saving of tCO2e</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of VSService.subVS |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.date_submitted}}</td>
+                      <td>{{c.submitted_saving}}</td>
+                      <td >{{c.pm_saving}}</td>
+                      <td >{{c.client_saving}}</td>
+                      <td >{{c.tco_saving}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditVS(c)" ><i class="fa fa-edit mr-1"> </i>  Add a PIN  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<ng-container *ngIf="showpgcrr">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Submitted PG/CRR</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Type</th>
+                      <th>Date conducted</th>
+                      <th>Date issued</th>
+                      <th>Score</th>
+                      <th>Result</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of pgcrrService.subPgcrr |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.type}}</td>
+                      <td>{{c.date_conducted}}</td>
+                      <td>{{c.date_issued}}</td>
+                      <td >{{c.score}}</td>
+                      <td>{{c.result}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"  (click)="onEditpgcrr(c)"><i class="fa fa-edit mr-1"> </i>  Add a PIN  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+<div>
+
+  <h4 class="mb-4 text-muted">Create new PIN</h4>
+  
+
+  <div class="row">
+    <div class="col-md-12 col-lg-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>New PIN</h5>
+        </div>
+        <div class="card-body">
+          <form #pinForm="ngForm" (ngSubmit)="onSubmit(pinForm)">
+            <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="pinService.selectedpin._id" >
+            <div class="form-group row">
+              <label for="projectname" class="col-sm-2 col-form-label text-nowrap">Project Name</label>
+              <div class="col-sm-4">
+                <select class="form-control rounded-0" readonly="readonly" id="project" name="p_name" #name="ngModel"
+                    [(ngModel)]="pinService.selectedpin.p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="source" class="col-sm-2 col-form-label text-nowrap">Source </label>
+              <div class="col-sm-4">
+                <select class="form-control rounded-0" readonly="readonly" id="project" name="source" #name="ngModel"
+                    [(ngModel)]="pinService.selectedpin.source">
+                    <option *ngFor="let s of sources">{{s}}</option>
+                  </select>
+              </div> 
+            </div> 
+            <div class="form-group row">
+              <label for="source" class="col-sm-2 col-form-label text-nowrap">Source ID</label>
+              <div class="col-sm-4">
+                <input type="text" readonly="readonly" class="form-control rounded-0" id="source" aria-describedby="emailHelp"
+                placeholder="Source ID" #name="ngModel" [(ngModel)]="pinService.selectedpin.sourceid" name="sourceid">
+              </div> 
+            </div>
+            <div class="form-group row">
+              <label for="rating"class="col-sm-2 col-form-label text-nowrap">Rating</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" id="source" aria-describedby="emailHelp"
+                placeholder="Rating" #name="ngModel" [(ngModel)]="pinService.selectedpin.rating" name="rating">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="category"class="col-sm-2 col-form-label text-nowrap">Category</label>
+              <div class="col-sm-4">
+              <select  class="form-control rounded-0" id="category"#name="ngModel" [(ngModel)]="pinService.selectedpin.category" name="category">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="description" class="col-sm-2 col-form-label text-nowrap">Description</label>
+              <div class="col-sm-4">
+                <textarea type="text" class="form-control rounded-0" id="description" aria-describedby="emailHelp"
+                  placeholder="Description" #name="ngModel" [(ngModel)]="pinService.selectedpin.description" name="description"></textarea>
+              </div> 
+            </div>
+            <div class="form-group row">
+              <label for="rootcauses" class="col-sm-2 col-form-label text-nowrap">Root Causes</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" id="rootcauses" 
+                  placeholder="Root cause" #name="ngModel" [(ngModel)]="pinService.selectedpin.root_causes" name="root_causes">
+                
+              </div> 
+              
+            </div>
+            
+          
+  
+    
+        <div class="card-title mb-1 p-3">
+          <h5>Action</h5>
+        </div>
+       <br>
+       <br>
+        <div></div>
+            <div class="form-group row">
+              <label for="actionwhat" class="col-sm-2 col-form-label text-nowrap">What</label>
+              <div class="col-sm-4">
+                <textarea type="text" class="form-control rounded-0" id="actionwhat" aria-describedby="emailHelp"#name="ngModel" [(ngModel)]="pinService.selectedpin.action_what" name="action_what"></textarea>
+              </div> 
+            </div>
+            <div class="form-group row">
+              <label for="actionwhom" class="col-sm-2 col-form-label text-nowrap">By whom</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" id="actionbywhom" aria-describedby="emailHelp"#name="ngModel" [(ngModel)]="pinService.selectedpin.action_whom" name="action_whom">
+              </div> 
+            </div>
+            <div class="form-group row">
+              <label for="actionwhen" class="col-sm-2 col-form-label date-nowrap">By when</label>
+              <div class="col-sm-2">
+                <input type="date" class="form-control rounded-0" id="actionwhen" aria-describedby="emailHelp" #name="ngModel" [(ngModel)]="pinService.selectedpin.action_when" name="action_when">
+              </div> 
+            </div>
+            <div class="form-group row">
+              <label for="comments" class="col-sm-2 col-form-label text-nowrap">Comments</label>
+              <div class="col-sm-4">
+                <textarea type="textarea" class="form-control rounded-0" id="comments" aria-describedby="emailHelp" #name="ngModel" [(ngModel)]="pinService.selectedpin.comments" name="comments"></textarea>
+              </div> 
+            </div>
+          
+          <div class="form-group row">
+          <div class="col-sm-4 ">
+            <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+          </div>
+          </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+   
+    
+      
+    
+
+
+        

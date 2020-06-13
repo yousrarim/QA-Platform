@@ -1,0 +1,733 @@
+
+<style>
+  .my-pagination /deep/ .ngx-pagination .current {
+    background: rgb(99, 96, 139);
+  }
+</style>
+
+<div>
+  <h4 class="mb-4 text-muted">Update a Plan</h4>
+  <div class="row">
+    <div class="col-md-12 col-lg-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Select an activity</h5>
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCes()"> CES
+          </button>
+          <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCss()"> CSS
+          </button>
+          <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleaudit()">
+            AUDITS </button>
+          <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepgcrr()">
+            PG&CRR </button>
+          <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepdri()"> PDRI
+          </button>
+          <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglev()"> V+/S+
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-container *ngIf="showces">
+  
+<div>
+
+  
+  <div class="row">
+
+    <div class="col-md-12 mb-4">
+  
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Planned CES</h5>
+        </div>
+        <div class="card-body">
+          <div class="example-header">
+            <div>
+            <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+          </div>
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Project name</th>
+                    <th>Plan date</th>
+                    <th>Forcasted</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let c of cesService.lesces |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                    <td>{{c.p_name}}</td>
+                    <td>{{c.plan_date}}</td>
+                    <td style="color: brown;">{{c.forcasted_date}}</td>
+                    <td >
+                    <a class="btn1 btn-outline-lightning btn-sm" (click)="onEdit(c)" ><i class="fa fa-edit mr-1"> </i> Update  </a>
+                    </td>
+                  </tr> 
+                </tbody>
+                
+                <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+              
+              </table>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+  
+ 
+  <div class="row">
+    <div class="col-md-12 col-lg-12 mb-4">
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+
+          <h5>Update CES </h5>
+        </div>
+        <div class="card-body">
+          <form #cesForm="ngForm" (ngSubmit)="onSubmitCES(cesForm)">
+            <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="cesService.selectedCes._id">
+            <div class="form-group row">
+              <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+              <div class="col-sm-4">
+                <select class="form-control rounded-0" id="project" #name="ngModel"
+                  [(ngModel)]="cesService.selectedCes.p_name" name="p_name" required>
+                  <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="plandate" class="col-sm-2 col-form-label date-nowrap">Plan date</label>
+              <div class="col-sm-2">
+                <input type="date" class="form-control rounded-0" id="plandate" aria-describedby="emailHelp"
+                  placeholder="Date" [(ngModel)]="cesService.selectedCes.plan_date" name="plan_date" #name="ngModel"
+                  required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="forcasted_date" class="col-sm-2 col-form-label date-nowrap">Forcasted date</label>
+              <div class="col-sm-2">
+                <input type="date" class="form-control rounded-0" id="forcasted_date" aria-describedby="emailHelp"
+                  placeholder="Date" [(ngModel)]="cesService.selectedCes.forcasted_date" name="forcasted_date" #name="ngModel"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-10 mb-3">
+                <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-container *ngIf="showcss">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned CSS</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of cssService.lesCss |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditcss(c)" ><i class="fa fa-edit mr-1"> </i>  Update </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Update CSS </h5>
+          </div>
+          <div class="card-body">
+            <form #cssForm="ngForm" (ngSubmit)="onSubmitCSS(cssForm)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="cssService.selectedCss._id">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" #name="ngModel"
+                    [(ngModel)]="cssService.selectedCss.p_name" name="p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="plandate" class="col-sm-2 col-form-label date-nowrap">Plan date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="plandate" aria-describedby="emailHelp"
+                    placeholder="Date" [(ngModel)]="cssService.selectedCss.plan_date" name="plan_date" #name="ngModel">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="forcasted_date" class="col-sm-2 col-form-label date-nowrap">Forcasted date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="forcasted_date" aria-describedby="emailHelp"
+                    placeholder="Date" [(ngModel)]="cssService.selectedCss.forcasted_date" name="forcasted_date" #name="ngModel"
+                    required>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-10 ">
+                  <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+
+<ng-container *ngIf="showaudit">
+    
+<div>
+
+  
+  <div class="row">
+
+    <div class="col-md-12 mb-4">
+  
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Planned Audits</h5>
+        </div>
+        <div class="card-body">
+          <div class="example-header">
+            <div>
+            <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+          </div>
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Project name</th>
+                    <th>Audit name</th>
+                    <th>Audit type</th>
+                    <th>Discipline</th>
+                    <th>Plan date</th>
+                    <th>Forcasted</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let c of auditService.lesAudit |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                    <td>{{c.p_name}}</td>
+                    <td>{{c.audit_name}}</td>
+                    <td>{{c.audit_type}}</td>
+                    <td>{{c.discipline}}</td>
+                    <td>{{c.plan_date}}</td>
+                    <td style="color: brown;">{{c.forcasted_date}}</td>
+                    <td >
+                    <a class="btn1 btn-outline-lightning btn-sm" (click)="onEditaudit(c)" ><i class="fa fa-edit mr-1"> </i> Update  </a>
+                    </td>
+                  </tr> 
+                </tbody>
+                
+                <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+              
+              </table>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+  
+ 
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Update  audit </h5>
+          </div>
+          <div class="card-body">
+            <form #auditForm="ngForm" (ngSubmit)="onSubmitAUDIT(auditForm)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="auditService.selectedAudit._id">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" [(ngModel)]="auditService.selectedAudit.p_name"
+                    #name="ngModel" name="p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="audittype" class="col-sm-2 col-form-label text-nowrap">Audit type</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="audittype" name="audit_type" #name="ngModel"
+                    [(ngModel)]="auditService.selectedAudit.audit_type">
+                    <option *ngFor="let type of types">{{type}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="auditname" class="col-sm-2 col-form-label text-nowrap">Audit name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="auditname" name="audit_name" #name="ngModel"
+                    [(ngModel)]="auditService.selectedAudit.audit_name">
+                    <option *ngFor="let a of auditname">{{a}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="discipline" class="col-sm-2 col-form-label text-nowrap">Discipline</label>
+                <div class="col-sm-4">
+
+                  <input type="text" class="form-control rounded-0" id="discipline" aria-describedby="emailHelp"
+                    placeholder="Discipline" name="discipline" #name="ngModel"
+                    [(ngModel)]="auditService.selectedAudit.discipline">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="plandate" class="col-sm-2 col-form-label date-nowrap">Plan date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="plandate" aria-describedby="emailHelp"
+                    placeholder="Date" name="plan_date" #name="ngModel"
+                    [(ngModel)]="auditService.selectedAudit.plan_date">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="forcasted_date" class="col-sm-2 col-form-label date-nowrap">Forcasted date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="forcasted_date" aria-describedby="emailHelp"
+                    placeholder="Date" [(ngModel)]="auditService.selectedAudit.forcasted_date" name="forcasted_date" #name="ngModel"
+                    required>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-10 ">
+                  <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+
+<ng-container *ngIf="showpdri">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned PDRIs</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Type</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of pdriService.lesPdri |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.type}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"(click)="onEditpdri(c)"  ><i class="fa fa-edit mr-1"> </i>  Update </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Update PDRI </h5>
+          </div>
+          <div class="card-body">
+            <form #pdriform="ngForm" (ngSubmit)="onSubmitPDRI(pdriform)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="pdriService.selectedPdri._id">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" name="p_name" #name="ngModel"
+                    [(ngModel)]="pdriService.selectedPdri.p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="typepdri" class="col-sm-2 col-form-label text-nowrap">Type</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="typepdri" name="type" #name="ngModel"
+                    [(ngModel)]="pdriService.selectedPdri.type">
+                    <option *ngFor="let l of typepdri">{{l}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="plandate" class="col-sm-2 col-form-label date-nowrap">Plan date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="plandate" aria-describedby="emailHelp"
+                    placeholder="Date" name="plan_date" #name="ngModel"
+                    [(ngModel)]="pdriService.selectedPdri.plan_date">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="forcasted_date" class="col-sm-2 col-form-label date-nowrap">Forcasted date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="forcasted_date" aria-describedby="emailHelp"
+                    placeholder="Date" [(ngModel)]="pdriService.selectedPdri.forcasted_date" name="forcasted_date" #name="ngModel"
+                    required>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-10 ">
+                  <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+
+
+<ng-container *ngIf="showpgcrr">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned PG/CRR</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>Type</th>
+                      <th>Plan date</th>
+                      <th>Forcasted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of pgcrrService.lesPgcrr |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.type}}</td>
+                      <td>{{c.plan_date}}</td>
+                      <td style="color: brown;">{{c.forcasted_date}}</td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"  (click)="onEditpgcrr(c)"><i class="fa fa-edit mr-1"> </i> Update  </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Plan PG & CRR </h5>
+          </div>
+          <div class="card-body">
+            <form #pgcrrform="ngForm" (ngSubmit)="onSubmitPGCRR(pgcrrform)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="pgcrrService.selectedPgcrr._id">
+              <div class="form-group row">
+                <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="project" name="p_name" #name="ngModel"
+                    [(ngModel)]="pgcrrService.selectedPgcrr.p_name">
+                    <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="typepg" class="col-sm-2 col-form-label text-nowrap">Type</label>
+                <div class="col-sm-4">
+                  <select class="form-control rounded-0" id="typepg" name="type" #name="ngModel"
+                    [(ngModel)]="pgcrrService.selectedPgcrr.type">
+                    <option *ngFor="let l of typepg">{{l}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="plandate" class="col-sm-2 col-form-label date-nowrap">Plan date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="plandate" aria-describedby="emailHelp"
+                    placeholder="Date" name="plan_date" #name="ngModel"
+                    [(ngModel)]="pgcrrService.selectedPgcrr.plan_date">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="forcasted_date" class="col-sm-2 col-form-label date-nowrap">Forcasted date</label>
+                <div class="col-sm-2">
+                  <input type="date" class="form-control rounded-0" id="forcasted_date" aria-describedby="emailHelp"
+                    placeholder="Date" [(ngModel)]="pgcrrService.selectedPgcrr.forcasted_date" name="forcasted_date" #name="ngModel"
+                    required>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10 ">
+                  <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
+
+
+
+<ng-container *ngIf="showv">
+  <div>
+
+  
+    <div class="row">
+  
+      <div class="col-md-12 mb-4">
+    
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Planned V+/S+</h5>
+          </div>
+          <div class="card-body">
+            <div class="example-header">
+              <div>
+              <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+            </div>
+            <div class="table-responsive-md">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Project name</th>
+                      <th>V+ planned target</th>
+                      <th>V+ new target</th>
+                      <th>S+ planned target</th>
+                      <th>S+ new target</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let c of VSService.lesVS |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                      <td>{{c.p_name}}</td>
+                      <td>{{c.target_v}} <i>MMAD</i> </td>
+                      <td style="color: brown;">{{c.new_target_v}} <i>MMAD</i></td>
+                      <td>{{c.target_s}} <i>tCO2e</i></td>
+                      <td style="color: brown;">{{c.new_target_s}} <i>tCO2e</i></td>
+                      <td >
+                      <a class="btn1 btn-outline-lightning btn-sm"  (click)="onEditVS(c)"><i class="fa fa-edit mr-1"></i>   Update </a>
+                      </td>
+                    </tr> 
+                  </tbody>
+                  
+                  <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+                
+                </table>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12 mb-4">
+        <div class="card border-0 rounded-0">
+          <div class="card-title mb-1 p-3">
+            <h5>Update Value plus & Sustainability plus </h5>
+          </div>
+
+          <div class="card-body">
+            
+            <form #vsform="ngForm" (ngSubmit)="onSubmitVS(vsform)">
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="VSService.selectedVS._id">
+              <input type="hidden" name="target_s" #_id="ngModel" [(ngModel)]="VSService.selectedVS.target_s">
+              <input type="hidden" name="target_v" #_id="ngModel" [(ngModel)]="VSService.selectedVS.target_v">
+                <div class="form-group row">
+                  <label for="project" class="col-sm-2 col-form-label text-nowrap">Project name</label>
+                  <div class="col-sm-4">
+                    <select class="form-control rounded-0" id="project" name="p_name" #name="ngModel"
+                      [(ngModel)]="VSService.selectedVS.p_name">
+                      <option *ngFor="let proj of projectService.projects">{{proj.p_name}}</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <h6>Value plus (MMAD) : </h6>
+                <div></div>
+              
+              <div class="form-group row">
+                <label for="target" class="col-sm-2 col-form-label text-nowrap">New target</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="target_v" aria-describedby="emailHelp"
+                    placeholder="" name="new_target_v" #name="ngModel" [(ngModel)]="VSService.selectedVS.new_target_v">
+                </div>
+              </div>
+
+
+              
+                <h6>Sustainability plus (tCO2e) :</h6>
+              <div></div>
+
+              <div class="form-group row">
+                <label for="target" class="col-sm-2 col-form-label text-nowrap">New target</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control rounded-0" id="target_s" aria-describedby="emailHelp"
+                    placeholder="" name="new_target_s" #name="ngModel" [(ngModel)]="VSService.selectedVS.new_target_s">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-10 ">
+                  <button type="submit" class="btn btn-lightning " style="margin:auto;display:block;">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+

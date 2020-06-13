@@ -1,0 +1,213 @@
+
+
+
+
+<style>
+  .my-pagination /deep/ .ngx-pagination .current {
+    background: rgb(99, 96, 139);
+  }
+</style>
+
+
+
+
+
+
+<div>
+
+  <h4 class="mb-4 text-muted">Submit a project </h4>
+  <div class="row">
+
+    <div class="col-md-12 mb-4">
+  
+      <div class="card border-0 rounded-0">
+        <div class="card-title mb-1 p-3">
+          <h5>Existing projects</h5>
+        </div>
+        <div class="card-body">
+          <div class="example-header">
+            <div>
+            <input type="text" class="form-control rounded-0" placeholder="Search" [(ngModel)]="searchText"/>
+          </div>
+          <div class="table-responsive-md">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Project name</th>
+                    <th>Project Manager</th>
+                    <th>Assigned QA name</th>
+                    <th>Business unit</th>
+                    <th >Program</th>
+                    <th >Client</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let proj of projectService.projects |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
+                    <td>{{proj.p_name}}</td>
+                    <td>{{proj.p_manager}}</td>
+                    <td>{{proj.qa_name}}</td>
+                    <td>{{proj.business_unit}}</td>
+                    <td>{{proj.program}}</td>
+                    <td>{{proj.client}}</td>
+                   
+                  </tr> 
+                </tbody>
+                
+                <pagination-controls class="my-pagination" (pageChange)="p=$event" ></pagination-controls>
+              
+              </table>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+<!--
+  <div class="row">
+    <div class="col-md-12 col-lg-6 mb-4 align-items-stretch">
+      <div class="card border-0 rounded-0 h-100">
+        <div class="card-title mb-1 p-3">
+          <h5>Basic Form</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control rounded-0" id="exampleInputEmail1" 
+                placeholder="Enter email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control rounded-0" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="custom-control custom-checkbox my-1 mr-sm-2 mb-3">
+              <input type="checkbox" class="custom-control-input" id="customControlInline">
+              <label class="custom-control-label" for="customControlInline">Remember me</label>
+            </div>
+            <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2">Submit</button>
+            <button type="button " class="btn btn-outline-lightning rounded-0 mb-2">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  -->
+  </div>
+  <div class="row">
+    <div class="col-md-12 mb-4 align-items-stretch">
+      <div class="card border-0 rounded-0 ">
+        <div class="card-title mb-1 p-3">
+          <h5>New project</h5>
+        </div>
+        <div class="card-body">
+          <form #projectForm="ngForm" (ngSubmit)="onSubmit(projectForm)">
+            <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="projectService.selectedProject._id" >
+            <div class="form-group row">
+              <label for="projectname" class="col-sm-2 col-form-label text-nowrap">Project Name</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" id="projectname" required
+                  placeholder="Project Name" #name="ngModel" [(ngModel)]="projectService.selectedProject.p_name" name="p_name">
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="projectmanager" class="col-sm-2 col-form-label text-nowrap">Project Manager</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" required id="projectmanager" 
+                  placeholder="Project Manager" #name="ngModel" [(ngModel)]="projectService.selectedProject.p_manager" name="p_manager">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="qaname" class="col-sm-2 col-form-label text-nowrap">Assigned QA Name</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" id="qaname" 
+                  placeholder="Assigned QA Name" #name="ngModel" [(ngModel)]="projectService.selectedProject.qa_name" name="qa_name">
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="phase"class="col-sm-2 col-form-label text-nowrap">Phase</label>
+              <div class="col-sm-4">
+                <ejs-multiselect id='localData' #name="ngModel" [(ngModel)]="projectService.selectedProject.phase" 
+                name="phase" #local [dataSource]='phases' [fields]='localFields' [placeholder]='localWaterMark'></ejs-multiselect> 
+            </div>
+            </div>
+          
+            <div class="form-group row">
+              <label for="bu"class="col-sm-2 col-form-label text-nowrap">Business unit</label>
+              <div class="col-sm-4">
+              <select  class="form-control rounded-0" id="bu" #name="ngModel" [(ngModel)]="projectService.selectedProject.business_unit" name="business_unit" >
+                <option *ngFor="let bu of BusinessUnits">{{bu}}</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="program"class="col-sm-2 col-form-label text-nowrap">Program</label>
+              <div class="col-sm-4">
+              <select  class="form-control rounded-0" id="program" #name="ngModel" [(ngModel)]="projectService.selectedProject.program" name="program" >
+                <option *ngFor="let p of Programs">{{p}}</option>
+                
+              </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="cv" class="col-sm-2 col-form-label text-nowrap">Contract value</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control rounded-0" id="cv" 
+                  placeholder="Contract value" #name="ngModel" [(ngModel)]="projectService.selectedProject.contract_value" name="contract_value" >
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="scope"class="col-sm-2 col-form-label text-nowrap">Scope of JESA</label>
+              <div class="col-sm-4">
+              <select  class="form-control rounded-0" id="scope" #name="ngModel" [(ngModel)]="projectService.selectedProject.scope" name="scope" >
+                <option *ngFor="let s of Scope">{{s}}</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="typec"class="col-sm-2 col-form-label text-nowrap">Type of contract</label>
+              <div class="col-sm-4">
+              <select  class="form-control rounded-0" id="typec" #name="ngModel" [(ngModel)]="projectService.selectedProject.type_contract" name="type_contract">
+                <option *ngFor="let c of Contract_Type">{{c}}</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="location"class="col-sm-2 col-form-label text-nowrap">Location</label>
+              <div class="col-sm-4">
+              <select  class="form-control rounded-0" id="location" #name="ngModel" [(ngModel)]="projectService.selectedProject.location" name="location">
+                <option *ngFor="let l of Location">{{l}}</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="client" class="col-sm-2 col-form-label text-nowrap">Client</label>
+              <div class="col-sm-4">
+                <select class="form-control rounded-0" id="client" 
+                  placeholder="Client" #name="ngModel" [(ngModel)]="projectService.selectedProject.client"  name="client">
+                  <option *ngFor="let c of Client">{{c}}</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-2 col-form-label"></label>
+              <div class="col-sm-10 mb-3">
+                <button type="submit" class="btn btn-lightning rounded-0 mb-2 mr-2 ">Submit</button>
+                <button type="button " class="btn btn-outline-lightning rounded-0 mb-2 " (click)="resetForm(projectForm)">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
