@@ -1,6 +1,6 @@
 # QA-Platform
 *****************************************************************************
-This application is dedicated for the Quality Aassurance department of JESA.
+This application is dedicated for the Quality Assurance department of JESA.
 *****************************************************************************
 Backend is a NodeJs project, pleace execute the following code to run it.
 ---------
