@@ -5,7 +5,7 @@
 </style>
 
 <div>
-  <h4 class="mb-4 text-muted">Submit a QA metric</h4>
+  <h4 class="mb-4 text-muted">Update a QA metric</h4>
   <div class="row">
     <div class="col-md-12 col-lg-12 mb-4">
       <div class="card border-0 rounded-0">
@@ -17,7 +17,7 @@
         
         <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleCss()"> CSS </button>
         <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="toggleaudit()"> AUDITS </button>
-        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepgcrr()"> PG&CRR </button>
+        <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepgcrr()"> Pass Gate </button>
         <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglepdri()"> PDRI </button>
         <button type="button" class="btn btn-lightning rounded-0 mb-2 mr-2" label="Click" (click)="togglev()"> V+/S+ </button>
       
@@ -52,7 +52,7 @@
                   <thead>
                     <tr>
                       <th>Project name</th>
-                      <th>ID</th>
+                      
 
                       <th>Conducted by</th>
                       <th>Date conducted</th>
@@ -65,7 +65,6 @@
   
                     <tr *ngFor="let c of cesService.submittedces |filter:searchText |paginate: {itemsPerPage:10, currentPage:p}" >
                       <td>{{c.p_name}}</td>
-                      <td>{{c._id}}</td>
                       <td>{{c.conducted_by}}</td>
                       <td>{{c.date_conducted}}</td>
                       <td>{{c.date_issued}}</td>
@@ -94,7 +93,7 @@
       <div class="col-md-12 col-lg-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Add CES</h5>
+            <h5>Update CES</h5>
           </div>
           <div class="card-body">
             <form #cesForm="ngForm" (ngSubmit)="onSubmitCES(cesForm)">
@@ -239,7 +238,7 @@
       <div class="col-md-12 col-lg-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5> Add CSS</h5>
+            <h5> Update CSS</h5>
           </div>
           <div class="card-body">
             <form #cssForm="ngForm" (ngSubmit)="onSubmitCSS(cssForm)">
@@ -489,7 +488,7 @@
       <div class="col-md-12 col-lg-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Add audit</h5>
+            <h5>Update audit</h5>
           </div>
           <div class="card-body">
             <form #auditForm="ngForm" (ngSubmit)="onSubmitAUDIT(auditForm)" >
@@ -656,7 +655,7 @@
       <div class="col-md-12 col-lg-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Add PDRI</h5>
+            <h5>Update PDRI</h5>
           </div>
           <div class="card-body">
             <form #pdriform="ngForm" (ngSubmit)="onSubmitPDRI(pdriform)">
@@ -815,7 +814,7 @@
       <div class="col-md-12 col-lg-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Value + /Sustainability +</h5>
+            <h5> Update Value + /Sustainability +</h5>
           </div>
           <div class="card-body">
             <form #vsform="ngForm" (ngSubmit)="onSubmitVS(vsform)">
@@ -999,7 +998,7 @@
       <div class="col-md-12 col-lg-12 mb-4">
         <div class="card border-0 rounded-0">
           <div class="card-title mb-1 p-3">
-            <h5>Add PG & CRR</h5>
+            <h5>Update PG & CRR</h5>
           </div>
           <div class="card-body">
             <form #pgcrrform="ngForm" (ngSubmit)="onSubmitPGCRR(pgcrrform)">
